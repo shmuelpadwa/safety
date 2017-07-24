@@ -1,0 +1,41 @@
+
+int vibe9=9;
+int vibe8 = 8;
+int delayRead =50;
+int IRpin9 = A1;
+int IRpin8 = A2;
+int val = 0;
+void setup() {
+
+   pinMode(IRpin9 ,INPUT);
+   pinMode(vibe9 ,OUTPUT);
+   pinMode(IRpin8 ,INPUT);
+   pinMode(vibe8 ,OUTPUT);
+   Serial.begin(9600);
+
+}
+void loop() {
+  float pinnine = analogRead(IRpin9);
+  float pineight = analogRead(IRpin8);
+  Serial.print(pinnine);
+  Serial.print("---");
+  Serial.println(pineight);
+  delay(300);
+
+
+   while (pinnine > 200) {
+    digitalWrite(vibe9, HIGH);
+    delay(300);
+    digitalWrite(vibe9, LOW);
+    break;
+   }
+  while (pineight > 200) {
+    digitalWrite(vibe8, HIGH);
+    delay(300);
+    digitalWrite(vibe8, LOW);
+    break;
+ }
+
+}
+
+
