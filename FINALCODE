@@ -1,10 +1,12 @@
 
-#define vibe 9
+#define vibe1 9
+#define vibe2 8
 #define trigPin1 3
 #define echoPin1 4
-//#define trigPin2 4
-//#define echoPin2 5
-
+#define trigPin2 5
+#define echoPin2 6
+/* defining which pins do what
+Connecting vibration motors to pins 8 and 9, triggers to 3 and 5, echoers to 4 and 6 */
 
 long duration, distance, RightSensor,BackSensor,FrontSensor,LeftSensor;
 
@@ -13,49 +15,57 @@ void setup()
 Serial.begin (9600);
 pinMode(trigPin1, OUTPUT);
 pinMode(echoPin1, INPUT);
-//pinMode(trigPin2, OUTPUT);
-//pinMode(echoPin2, INPUT);
-
-pinMode(vibe, OUTPUT);
-
+pinMode(trigPin2, OUTPUT);
+pinMode(echoPin2, INPUT);
+pinMode(vibe1, OUTPUT);
+pinMode(vibe2, OUTPUT);
 }
+/* declaring pins. 
+Echo pins for input, triggers and vibe motors for output*/
 
 void loop() {
-//small_stepper.setSpeed(600);
+small_stepper.setSpeed(600);
 
 SonarSensor(trigPin1, echoPin1);
 RightSensor = distance;
-//SonarSensor(trigPin2, echoPin2);
-//LeftSensor = distance;
+SonarSensor(trigPin2, echoPin2);
+LeftSensor = distance;
 
-//Serial.print(LeftSensor);
-//Serial.print(" --- ");
+Serial.print(LeftSensor);
+Serial.print(" --- ");
 Serial.println(RightSensor);
 
  while (RightSensor < 50) {
-    digitalWrite(vibe, HIGH);
+    digitalWrite(vibe1, HIGH);
     delay(500);
-    digitalWrite(vibe, LOW);
+    digitalWrite(vibe1, LOW);
 
     break;
  }
-// while (LeftSensor < 30) {
-//    digitalWrite(vibe, HIGH);
-//    delay(500);
-//    digitalWrite(vibe, LOW);
-//    break;
-// }
+ while (LeftSensor < 50) {
+    digitalWrite(vibe2, HIGH);
+    delay(500);
+    digitalWrite(vibe2, LOW);
+    break;
+ }
 } 
 
-void SonarSensor(int trigPin,int echoPin)
+void SonarSensor(int trigPin1,int echoPin1, int trigPin2, int echoPin2)
 {
-digitalWrite(trigPin, LOW);
+digitalWrite(trigPin1, LOW);
 delayMicroseconds(2);
-digitalWrite(trigPin, HIGH);
+digitalWrite(trigPin1, HIGH);
 delayMicroseconds(10);
-digitalWrite(trigPin, LOW);
-duration = pulseIn(echoPin, HIGH);
-distance = (duration/2) / 29.1;
+digitalWrite(trigPin1, LOW);
+duration1 = pulseIn(echoPin1, HIGH);
+distance1 = (duration/2) / 29.1;
+digitalWrite(trigPin2, LOW);
+delayMicroseconds(2);
+digitalWrite(trigPin2, HIGH);
+delayMicroseconds(10);
+digitalWrite(trigPin2, LOW);
+duration2 = pulseIn(echoPin2, HIGH);
+distance2 = (duration/2) / 29.1;
 
 }
 
