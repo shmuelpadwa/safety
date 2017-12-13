@@ -21,8 +21,10 @@ pinMode(vibe1, OUTPUT);
 pinMode(vibe2, OUTPUT);
 }
 /* declaring pins. 
-Echo pins for input, triggers and vibe motors for output*/
+*Echo pins for input, triggers and vibe motors for output
+*serial print only required when connected to console*/
 
+ 
 void loop() {
 small_stepper.setSpeed(600);
 
@@ -30,16 +32,19 @@ SonarSensor(trigPin1, echoPin1);
 RightSensor = distance;
 SonarSensor(trigPin2, echoPin2);
 LeftSensor = distance;
+/* declaring distances as variables */
 
 Serial.print(LeftSensor);
 Serial.print(" --- ");
 Serial.println(RightSensor);
+/* serial printing for console-connected testing */
 
  while (RightSensor < 50) {
     digitalWrite(vibe1, HIGH);
     delay(500);
     digitalWrite(vibe1, LOW);
-
+    /* Turns the vibration motor on for 500 ms. 750 seemed excessive, as it kept going after you had moved
+    *250 or lower wasnt long enough, and may have been missed */
     break;
  }
  while (LeftSensor < 50) {
@@ -47,6 +52,7 @@ Serial.println(RightSensor);
     delay(500);
     digitalWrite(vibe2, LOW);
     break;
+    /* same as previous, but for left motor */
  }
 } 
 
@@ -59,6 +65,7 @@ delayMicroseconds(10);
 digitalWrite(trigPin1, LOW);
 duration1 = pulseIn(echoPin1, HIGH);
 distance1 = (duration/2) / 29.1;
+
 digitalWrite(trigPin2, LOW);
 delayMicroseconds(2);
 digitalWrite(trigPin2, HIGH);
@@ -66,6 +73,9 @@ delayMicroseconds(10);
 digitalWrite(trigPin2, LOW);
 duration2 = pulseIn(echoPin2, HIGH);
 distance2 = (duration/2) / 29.1;
-
+/* Does the same for both left and right motors. Microsecond delay to not overload the hardware. 
+* Distance is defined by half the duration divided by 29.1. The duration goes to the object and back to the sensor,
+* so dividing by two gives just the duration to the object. 
+* Speed of sound is about 0.03435 cm/microseconds outside between 20-20 degrees Celsius.
+* So distance is (Duration/2)*0.03435, which equals (Duration/2)/29.1
 }
-
